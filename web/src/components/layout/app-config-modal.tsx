@@ -10,6 +10,9 @@ import { useConfigStore, useEffectiveConfig, type AiConfig } from "@/stores/use-
 export function AppConfigModal() {
     const { message } = App.useApp();
     const [loadingModels, setLoadingModels] = useState(false);
+    const [sub2apiBaseUrl, setSub2apiBaseUrl] = useState("");
+    const [sub2apiAdminKey, setSub2apiAdminKey] = useState("");
+    const [syncingSub2api, setSyncingSub2api] = useState(false);
     const config = useConfigStore((state) => state.config);
     const updateConfig = useConfigStore((state) => state.updateConfig);
     const isConfigOpen = useConfigStore((state) => state.isConfigOpen);
@@ -50,6 +53,30 @@ export function AppConfigModal() {
             message.error(error instanceof Error ? error.message : "读取模型失败");
         } finally {
             setLoadingModels(false);
+        }
+    };
+
+    const syncSub2apiConfig = async () => {
+        if (effectiveMode !== "local") return;
+        if (!sub2apiBaseUrl.trim() || !sub2apiAdminKey.trim()) {
+            message.error("请先填写 sub2api 地址和 Admin Key");
+            return;
+        }
+        setSyncingSub2api(true);
+        try {
+            const nextConfig: AiConfig = { ...config, baseUrl: sub2apiBaseUrl.trim(), apiKey: sub2apiAdminKey.trim() };
+            const models = await fetchImageModels(nextConfig);
+            updateConfig("baseUrl", nextConfig.baseUrl);
+            updateConfig("apiKey", nextConfig.apiKey);
+            updateConfig("models", models);
+            if (models.length && !models.includes(config.imageModel)) updateConfig("imageModel", models[0]);
+            if (models.length && !models.includes(config.videoModel)) updateConfig("videoModel", models[0]);
+            if (models.length && !models.includes(config.textModel)) updateConfig("textModel", models[0]);
+            message.success(`sub2api 同步完成，已导入 ${models.length} 个模型`);
+        } catch (error) {
+            message.error(error instanceof Error ? error.message : "sub2api 同步失败");
+        } finally {
+            setSyncingSub2api(false);
         }
     };
 
@@ -105,6 +132,18 @@ export function AppConfigModal() {
                                 <Button size="small" loading={loadingModels} onClick={() => void refreshModels()}>
                                     拉取模型列表
                                 </Button>
+                            </div>
+                            <div className="mb-4 rounded-lg border border-stone-200 p-3 dark:border-stone-800">
+                                <div className="mb-2 text-sm font-medium">导入 sub2api 账号</div>
+                                <div className="grid gap-3 md:grid-cols-2">
+                                    <Input placeholder="sub2api 地址" value={sub2apiBaseUrl} onChange={(event) => setSub2apiBaseUrl(event.target.value)} />
+                                    <Input.Password placeholder="sub2api Admin Key" value={sub2apiAdminKey} onChange={(event) => setSub2apiAdminKey(event.target.value)} />
+                                </div>
+                                <div className="mt-3 flex justify-end">
+                                    <Button type="primary" loading={syncingSub2api} onClick={() => void syncSub2apiConfig()}>
+                                        同步 sub2api
+                                    </Button>
+                                </div>
                             </div>
                         </>
                     ) : (
