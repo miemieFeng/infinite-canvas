@@ -6,8 +6,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/basketikun/infinite-canvas/config"
-	"github.com/basketikun/infinite-canvas/model"
+	"github.com/miemieFeng/infinite-canvas/config"
+	"github.com/miemieFeng/infinite-canvas/model"
 	"github.com/glebarez/sqlite"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"

@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/basketikun/infinite-canvas/service"
+	"github.com/miemieFeng/infinite-canvas/service"
 )
 
 func AIImagesGenerations(w http.ResponseWriter, r *http.Request) {

@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/basketikun/infinite-canvas/model"
-	"github.com/basketikun/infinite-canvas/service"
+	"github.com/miemieFeng/infinite-canvas/model"
+	"github.com/miemieFeng/infinite-canvas/service"
 )
 
 type adminSyncRequest struct {

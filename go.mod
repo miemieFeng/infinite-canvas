@@ -1,4 +1,4 @@
-module github.com/basketikun/infinite-canvas
+module github.com/miemieFeng/infinite-canvas
 
 go 1.25.0
 

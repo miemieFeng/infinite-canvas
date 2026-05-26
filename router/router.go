@@ -3,8 +3,8 @@ package router
 import (
 	"net/http"
 
-	"github.com/basketikun/infinite-canvas/handler"
-	"github.com/basketikun/infinite-canvas/middleware"
+	"github.com/miemieFeng/infinite-canvas/handler"
+	"github.com/miemieFeng/infinite-canvas/middleware"
 	"github.com/gin-gonic/gin"
 )
 

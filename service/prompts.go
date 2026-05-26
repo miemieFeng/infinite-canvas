@@ -3,8 +3,8 @@ package service
 import (
 	"time"
 
-	"github.com/basketikun/infinite-canvas/model"
-	"github.com/basketikun/infinite-canvas/repository"
+	"github.com/miemieFeng/infinite-canvas/model"
+	"github.com/miemieFeng/infinite-canvas/repository"
 )
 
 func ListPrompts(q model.Query) (model.PromptList, error) {
